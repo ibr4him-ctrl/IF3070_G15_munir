@@ -1,0 +1,8 @@
+{
+  "algorithm": "stochastic_hill_climbing",
+  "runs": 3,
+  "max_iterations": 1000,
+  "random_seed": 42,
+  "output_dir": "output",
+  "parameters": {}
+}
