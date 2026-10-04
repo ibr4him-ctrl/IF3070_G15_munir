@@ -1,0 +1,12 @@
+{
+  "algorithm": "simulated_annealing",
+  "runs": 3,
+  "max_iterations": 1000,
+  "random_seed": 42,
+  "output_dir": "output/adham",
+  "parameters": {
+    "initial_temperature": 60.0,
+    "cooling_rate": 0.99,
+    "min_temperature": 0.1
+  }
+}
