@@ -2,7 +2,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 
-class Orientation(str, Enum):
+# StrEnum changes str(member); retain the existing representation for API compatibility.
+class Orientation(str, Enum):  # noqa: UP042
     HORIZONTAL = "horizontal"
     VERTICAL = "vertical"
 
