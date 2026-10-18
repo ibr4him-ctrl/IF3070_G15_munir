@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 
-
 ParameterValue = int | float | str | bool
 
 
