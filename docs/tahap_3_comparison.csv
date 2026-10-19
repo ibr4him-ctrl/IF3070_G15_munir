@@ -1,0 +1,4 @@
+algorithm,runs,seeds,best_objective,average_final_objective,worst_final_objective,valid_solutions,average_runtime_seconds,average_iterations
+Hill Climbing,3,"42, 43, 44",430.00,423.33,415.00,3/3,0.041791,170.33
+Simulated Annealing,3,"42, 43, 44",430.00,428.33,425.00,3/3,0.130229,637.00
+Genetic Algorithm,3,"42, 43, 44",435.00,433.33,430.00,3/3,285.498358,1000.00
