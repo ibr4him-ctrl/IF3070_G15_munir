@@ -1,0 +1,24 @@
+{
+  "ship": {
+    "dimensions": { "w": 8, "l": 12 },
+    "max_capacity": 55
+  },
+  "vehicles": [
+    { "id": "V01", "dimensions": { "w": 2, "l": 3 }, "shipping_fee": 80, "weight": 5, "eta": 1 },
+    { "id": "V02", "dimensions": { "w": 2, "l": 4 }, "shipping_fee": 115, "weight": 7, "eta": 2 },
+    { "id": "V03", "dimensions": { "w": 3, "l": 3 }, "shipping_fee": 145, "weight": 9, "eta": 3 },
+    { "id": "V04", "dimensions": { "w": 2, "l": 2 }, "shipping_fee": 65, "weight": 4, "eta": 4 },
+    { "id": "V05", "dimensions": { "w": 3, "l": 4 }, "shipping_fee": 180, "weight": 12, "eta": 5 },
+    { "id": "V06", "dimensions": { "w": 1, "l": 3 }, "shipping_fee": 48, "weight": 3, "eta": 1 },
+    { "id": "V07", "dimensions": { "w": 2, "l": 3 }, "shipping_fee": 95, "weight": 6, "eta": 2 },
+    { "id": "V08", "dimensions": { "w": 2, "l": 2 }, "shipping_fee": 72, "weight": 5, "eta": 3 },
+    { "id": "V09", "dimensions": { "w": 3, "l": 2 }, "shipping_fee": 108, "weight": 7, "eta": 4 },
+    { "id": "V10", "dimensions": { "w": 1, "l": 4 }, "shipping_fee": 62, "weight": 4, "eta": 5 },
+    { "id": "V11", "dimensions": { "w": 3, "l": 3 }, "shipping_fee": 160, "weight": 11, "eta": 1 },
+    { "id": "V12", "dimensions": { "w": 2, "l": 4 }, "shipping_fee": 135, "weight": 8, "eta": 2 },
+    { "id": "V13", "dimensions": { "w": 2, "l": 2 }, "shipping_fee": 84, "weight": 6, "eta": 3 },
+    { "id": "V14", "dimensions": { "w": 1, "l": 2 }, "shipping_fee": 36, "weight": 2, "eta": 4 },
+    { "id": "V15", "dimensions": { "w": 3, "l": 4 }, "shipping_fee": 195, "weight": 13, "eta": 5 },
+    { "id": "V16", "dimensions": { "w": 2, "l": 3 }, "shipping_fee": 100, "weight": 7, "eta": 1 }
+  ]
+}
