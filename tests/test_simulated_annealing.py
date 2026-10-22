@@ -50,7 +50,6 @@ def test_seed_reproduces_states_and_every_search_metric():
 
 
 def test_acceptance_formula_and_best_survives_accepted_downhill_move():
-    # One cell means every move is unloading/loading or an equal-valued rotation.
     initial = State(Ship(1, 1, 1), [Vehicle("A", 1, 1, 10, 1, 0, x=0, y=0)])
     result = anneal(
         initial,
