@@ -14,7 +14,7 @@ from munir.core.initial_state import create_random_initial_state
 from munir.core.models import State
 from munir.experiments.config import ExperimentConfig
 from munir.experiments.hc_sa_metrics import validate_search_states, weight_upper_bound
-from munir.visualization.hc_sa import save_hc_sa_plots
+from munir.visualization.hc_sa import save_ga_report_plot, save_hc_sa_plots
 from munir.visualization.plots import save_run_plots
 
 
@@ -332,7 +332,7 @@ def run_experiment(problem: State, config: ExperimentConfig) -> ExperimentResult
     output_directory = _create_output_directory(config.output_dir, algorithm)
     _write_inputs(output_directory, problem, config)
     is_hc_sa = algorithm in {"hill_climbing", "stochastic_hill_climbing", "simulated_annealing"}
-    upper_bound = weight_upper_bound(problem) if is_hc_sa else None
+    upper_bound = weight_upper_bound(problem)
     benchmark = (
         {
             "problem_snapshot": "problem.json",
@@ -386,6 +386,8 @@ def run_experiment(problem: State, config: ExperimentConfig) -> ExperimentResult
         _write_run_json(output_directory, result)
         if is_hc_sa and config.parameters.get("plot_style") == "report":
             save_hc_sa_plots(result, algorithm, output_directory, upper_bound)
+        elif algorithm == "genetic_algorithm":
+            save_ga_report_plot(result, output_directory, upper_bound, config.output_dir.name)
         else:
             save_run_plots(result, algorithm, output_directory)
 

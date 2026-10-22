@@ -115,6 +115,98 @@ def plot_report_run(
     return figure
 
 
+def plot_ga_report_run(
+    run: "ExperimentRun",
+    upper_bound: float | None = None,
+    configuration_name: str | None = None,
+) -> Figure:
+    if run.initial_state is None:
+        raise ValueError("GA report figures require an initial state")
+    if run.population_size is None:
+        raise ValueError("GA report figures require a population size")
+    if len(run.objective_history) != run.iterations + 1:
+        raise ValueError("GA maximum history must include generation zero and every generation")
+    if run.average_history is None or len(run.average_history) != len(run.objective_history):
+        raise ValueError("GA average history must match the maximum history")
+
+    figure = Figure(figsize=(10, 8.4), facecolor="white")
+    figure.patch.set_edgecolor("#374151")
+    figure.patch.set_linewidth(0.8)
+    FigureCanvasAgg(figure)
+    grid = figure.add_gridspec(2, 2, height_ratios=[2.3, 1], hspace=0.43, wspace=0.28)
+    figure.subplots_adjust(left=0.09, right=0.97, top=0.90, bottom=0.12)
+    initial_axes = figure.add_subplot(grid[0, 0])
+    final_axes = figure.add_subplot(grid[0, 1])
+    history_axes = figure.add_subplot(grid[1, :])
+    colors = {
+        vehicle.id: colormaps["tab20"](i % 20)
+        for i, vehicle in enumerate(sorted(run.initial_state.vehicles, key=lambda v: v.id))
+    }
+    _draw_deck(initial_axes, run.initial_state, "State awal", colors)
+    _draw_deck(final_axes, run.final_state, "State akhir terbaik", colors)
+
+    generations = range(len(run.objective_history))
+    history_axes.plot(
+        generations,
+        run.objective_history,
+        label="Maksimum populasi",
+        color="#2563eb",
+        linewidth=1.1,
+    )
+    history_axes.plot(
+        generations,
+        run.average_history,
+        label="Rata-rata populasi",
+        color="#ea580c",
+        linewidth=1.1,
+    )
+    if upper_bound is not None:
+        history_axes.axhline(
+            upper_bound,
+            label=f"Batas atas knapsack berat {upper_bound:g}",
+            color="#6b7280",
+            linestyle=":",
+            linewidth=1.1,
+        )
+    history_axes.set(
+        xlabel="Generasi",
+        ylabel="ShippingFee (juta rupiah)",
+        xlim=(0, run.iterations),
+    )
+    history_axes.xaxis.set_major_locator(MaxNLocator(integer=True))
+    history_axes.tick_params(labelsize=8)
+    history_axes.grid(alpha=0.2)
+    history_axes.legend(fontsize=8, loc="best")
+
+    config_label = configuration_name or f"G={run.iterations}, P={run.population_size}"
+    figure.suptitle(
+        f"Genetic Algorithm | {config_label} | Percobaan {run.run}",
+        fontsize=14,
+        fontweight="bold",
+    )
+    figure.text(
+        0.5,
+        0.025,
+        f"Seed {run.seed} | F awal {run.initial_state.value:g} | "
+        f"F akhir {run.final_objective:g} | Generasi {run.iterations} | "
+        f"Waktu {run.duration_seconds:.4f} detik",
+        ha="center",
+        fontsize=10,
+    )
+    return figure
+
+
+def save_ga_report_plot(
+    run: "ExperimentRun",
+    directory: Path,
+    upper_bound: float | None,
+    configuration_name: str | None = None,
+) -> None:
+    figure = plot_ga_report_run(run, upper_bound, configuration_name)
+    figure.savefig(directory / f"run_{run.run:02d}_report.png", dpi=160)
+    figure.clear()
+
+
 def plot_diagnostics(run: "ExperimentRun") -> Figure:
     if run.temperature_history is None or run.acceptance_probability_history is None:
         raise ValueError("SA diagnostics require recorded temperatures and probabilities")
