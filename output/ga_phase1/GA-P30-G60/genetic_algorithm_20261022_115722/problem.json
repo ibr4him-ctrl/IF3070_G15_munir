@@ -1,0 +1,191 @@
+{
+  "ship": {
+    "dimensions": {
+      "w": 6,
+      "l": 8
+    },
+    "max_capacity": 30.0
+  },
+  "vehicles": [
+    {
+      "id": "V01",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 65.0,
+      "weight": 5.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V02",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 95.0,
+      "weight": 7.0,
+      "eta": 2,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V03",
+      "dimensions": {
+        "w": 1,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 45.0,
+      "weight": 3.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V04",
+      "dimensions": {
+        "w": 3,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 100.0,
+      "weight": 8.0,
+      "eta": 3,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V05",
+      "dimensions": {
+        "w": 2,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 55.0,
+      "weight": 4.0,
+      "eta": 2,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V06",
+      "dimensions": {
+        "w": 1,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 35.0,
+      "weight": 2.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V07",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 80.0,
+      "weight": 6.0,
+      "eta": 4,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V08",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 70.0,
+      "weight": 6.0,
+      "eta": 2,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V09",
+      "dimensions": {
+        "w": 1,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 50.0,
+      "weight": 3.0,
+      "eta": 3,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V10",
+      "dimensions": {
+        "w": 3,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 75.0,
+      "weight": 5.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V11",
+      "dimensions": {
+        "w": 2,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 40.0,
+      "weight": 3.0,
+      "eta": 5,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V12",
+      "dimensions": {
+        "w": 1,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 30.0,
+      "weight": 2.0,
+      "eta": 2,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    }
+  ]
+}
