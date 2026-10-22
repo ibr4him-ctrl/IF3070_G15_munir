@@ -1,0 +1,15 @@
+{
+  "algorithm": "simulated_annealing",
+  "runs": 3,
+  "max_iterations": 1000,
+  "random_seed": 42,
+  "output_dir": "output\\adham\\reference16",
+  "parameters": {
+    "initial_temperature": 100.0,
+    "cooling_rate": 0.995,
+    "min_temperature": 0.01,
+    "evaluation_bias": 0.0,
+    "stagnation_limit": 100,
+    "plot_style": "report"
+  }
+}
