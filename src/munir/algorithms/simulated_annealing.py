@@ -1,5 +1,3 @@
-"""Simulated annealing for maximization using the shared valid-neighbor generator."""
-
 import math
 import random
 import time
@@ -48,16 +46,6 @@ def simulated_annealing(
     evaluation_bias: float = 0.0,
     stagnation_limit: int = 100,
 ) -> SimulatedAnnealingResult:
-    """Return the best state, preserving the full trajectory of the current state.
-
-    History index 0 describes the initial state, with no proposed move. Subsequent
-    temperatures are the temperatures used for that iteration's acceptance test.
-    Stuck events are starts of consecutive iterations without a new best value;
-    this is a stagnation proxy, not a proof that all neighbors are worse.
-    Stagnation episodes count only streaks reaching stagnation_limit, once per
-    streak. evaluation_bias is a zero-only compatibility option: the benchmark
-    is evaluated exclusively by the shared ShippingFee objective.
-    """
     if not math.isfinite(initial_temperature) or initial_temperature <= 0:
         raise ValueError("Initial temperature must be positive and finite")
     if not math.isfinite(cooling_rate) or not 0 < cooling_rate < 1:
@@ -114,7 +102,6 @@ def simulated_annealing(
         try:
             candidate = random_neighbor(current, rng)
         except RuntimeError:
-            # The bounded sampler exhausted its attempts; not proof of local optimum.
             stop_reason = "neighbor_attempts_exhausted"
             break
 

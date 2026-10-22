@@ -1,17 +1,9 @@
-"""Validation and a weight-only relaxation for HC/SA experiment evidence."""
-
 from munir.core.constraints import constraint_violations
 from munir.core.models import State
 from munir.core.objective import calculate_objective
 
 
 def weight_upper_bound(problem: State) -> float | None:
-    """Solve the 0/1 weight knapsack; ignoring geometry gives an upper bound.
-
-    No bound is returned for fractional weights/capacity: integer DP would not
-    represent those instances without an explicitly chosen rescaling. The
-    optional bound is also skipped above five million DP cell updates.
-    """
     if not float(problem.ship.max_capacity).is_integer() or any(
         not float(v.weight).is_integer() for v in problem.vehicles
     ):
@@ -31,7 +23,6 @@ def weight_upper_bound(problem: State) -> float | None:
 
 
 def validate_search_states(problem: State, initial: State, final: State, last: State) -> dict:
-    """Reject invalid/stale results before exporting them as experiment evidence."""
     states = {"initial": initial, "final": final, "last": last}
     violations = {name: constraint_violations(state) for name, state in states.items()}
     expected_ids = {v.id for v in problem.vehicles}
