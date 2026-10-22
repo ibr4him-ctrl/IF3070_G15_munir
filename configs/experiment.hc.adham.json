@@ -3,6 +3,6 @@
   "runs": 3,
   "max_iterations": 1000,
   "random_seed": 42,
-  "output_dir": "output/adham",
-  "parameters": {"max_no_improvement": 150}
+  "output_dir": "output/adham/reference16",
+  "parameters": {"max_no_improvement": 100, "plot_style": "report"}
 }
