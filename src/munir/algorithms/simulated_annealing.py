@@ -29,6 +29,13 @@ class SimulatedAnnealingResult:
     stuck_events: int
     duration_seconds: float
     stop_reason: str
+    accepted_candidates: int = 0
+    rejected_candidates: int = 0
+    accepted_worse: int = 0
+    rejected_worse: int = 0
+    stagnation_episodes: int = 0
+    stagnation_limit: int = 100
+    evaluation_bias: float = 0.0
 
 
 def simulated_annealing(
@@ -38,6 +45,8 @@ def simulated_annealing(
     min_temperature: float = 0.01,
     max_iterations: int = 1000,
     seed: int | None = None,
+    evaluation_bias: float = 0.0,
+    stagnation_limit: int = 100,
 ) -> SimulatedAnnealingResult:
     """Return the best state, preserving the full trajectory of the current state.
 
@@ -45,6 +54,9 @@ def simulated_annealing(
     temperatures are the temperatures used for that iteration's acceptance test.
     Stuck events are starts of consecutive iterations without a new best value;
     this is a stagnation proxy, not a proof that all neighbors are worse.
+    Stagnation episodes count only streaks reaching stagnation_limit, once per
+    streak. evaluation_bias is a zero-only compatibility option: the benchmark
+    is evaluated exclusively by the shared ShippingFee objective.
     """
     if not math.isfinite(initial_temperature) or initial_temperature <= 0:
         raise ValueError("Initial temperature must be positive and finite")
@@ -60,6 +72,14 @@ def simulated_annealing(
         raise ValueError("Maximum iterations must be a positive integer")
     if not is_valid_state(initial_state):
         raise ValueError("Initial state must be valid")
+    if not math.isfinite(evaluation_bias) or evaluation_bias != 0:
+        raise ValueError("evaluation_bias must be 0.0 to preserve the benchmark objective")
+    if (
+        isinstance(stagnation_limit, bool)
+        or not isinstance(stagnation_limit, int)
+        or stagnation_limit <= 0
+    ):
+        raise ValueError("Stagnation limit must be a positive integer")
 
     started = time.perf_counter()
     rng = random.Random(seed)
@@ -78,9 +98,13 @@ def simulated_annealing(
     no_improvement = 0
     non_improving_iterations = 0
     stuck_events = 0
+    stagnation_episodes = 0
+    accepted_candidates = rejected_candidates = 0
+    accepted_worse = rejected_worse = 0
     stop_reason = "max_iterations"
 
-    for _ in range(max_iterations):
+    for iteration in range(max_iterations):
+        temperature = initial_temperature * cooling_rate**iteration
         if not current.vehicles:
             stop_reason = "no_vehicles"
             break
@@ -98,7 +122,12 @@ def simulated_annealing(
         probability = 1.0 if delta >= 0 else math.exp(delta / temperature)
         accepted = delta >= 0 or rng.random() < probability
         if accepted:
+            accepted_candidates += 1
+            accepted_worse += int(delta < 0)
             current = candidate
+        else:
+            rejected_candidates += 1
+            rejected_worse += int(delta < 0)
         if current.value > best.value:
             best = deepcopy(current)
             no_improvement = 0
@@ -107,6 +136,8 @@ def simulated_annealing(
                 stuck_events += 1
             no_improvement += 1
             non_improving_iterations += 1
+            if no_improvement == stagnation_limit:
+                stagnation_episodes += 1
 
         objectives.append(current.value)
         best_values.append(best.value)
@@ -115,7 +146,6 @@ def simulated_annealing(
         deltas.append(delta)
         accepted_moves.append(accepted)
         stagnation.append(no_improvement)
-        temperature *= cooling_rate
 
     return SimulatedAnnealingResult(
         initial_state=initial,
@@ -133,4 +163,11 @@ def simulated_annealing(
         stuck_events=stuck_events,
         duration_seconds=time.perf_counter() - started,
         stop_reason=stop_reason,
+        accepted_candidates=accepted_candidates,
+        rejected_candidates=rejected_candidates,
+        accepted_worse=accepted_worse,
+        rejected_worse=rejected_worse,
+        stagnation_episodes=stagnation_episodes,
+        stagnation_limit=stagnation_limit,
+        evaluation_bias=evaluation_bias,
     )
