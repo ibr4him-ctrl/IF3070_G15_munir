@@ -1,0 +1,251 @@
+{
+  "ship": {
+    "dimensions": {
+      "w": 8,
+      "l": 12
+    },
+    "max_capacity": 55.0
+  },
+  "vehicles": [
+    {
+      "id": "V01",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 80.0,
+      "weight": 5.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V02",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 115.0,
+      "weight": 7.0,
+      "eta": 2,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V03",
+      "dimensions": {
+        "w": 3,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 145.0,
+      "weight": 9.0,
+      "eta": 3,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V04",
+      "dimensions": {
+        "w": 2,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 65.0,
+      "weight": 4.0,
+      "eta": 4,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V05",
+      "dimensions": {
+        "w": 3,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 180.0,
+      "weight": 12.0,
+      "eta": 5,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V06",
+      "dimensions": {
+        "w": 1,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 48.0,
+      "weight": 3.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V07",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 95.0,
+      "weight": 6.0,
+      "eta": 2,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V08",
+      "dimensions": {
+        "w": 2,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 72.0,
+      "weight": 5.0,
+      "eta": 3,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V09",
+      "dimensions": {
+        "w": 3,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 108.0,
+      "weight": 7.0,
+      "eta": 4,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V10",
+      "dimensions": {
+        "w": 1,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 62.0,
+      "weight": 4.0,
+      "eta": 5,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V11",
+      "dimensions": {
+        "w": 3,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 160.0,
+      "weight": 11.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V12",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 135.0,
+      "weight": 8.0,
+      "eta": 2,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V13",
+      "dimensions": {
+        "w": 2,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 84.0,
+      "weight": 6.0,
+      "eta": 3,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V14",
+      "dimensions": {
+        "w": 1,
+        "l": 2
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 36.0,
+      "weight": 2.0,
+      "eta": 4,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V15",
+      "dimensions": {
+        "w": 3,
+        "l": 4
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 195.0,
+      "weight": 13.0,
+      "eta": 5,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    },
+    {
+      "id": "V16",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "orientation": "horizontal",
+      "shipping_fee": 100.0,
+      "weight": 7.0,
+      "eta": 1,
+      "position": {
+        "x": null,
+        "y": null
+      }
+    }
+  ]
+}

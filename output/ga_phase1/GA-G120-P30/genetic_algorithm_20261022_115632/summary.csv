@@ -1,4 +1,0 @@
-run,seed,initial_objective,final_objective,iterations,duration_seconds,population_size,non_improving_iterations,stuck_events
-1,42,425.0,430.0,120,4.798049299999548,30,,
-2,43,430.0,430.0,120,4.941264299999602,30,,
-3,44,435.0,435.0,120,5.321755599998141,30,,
