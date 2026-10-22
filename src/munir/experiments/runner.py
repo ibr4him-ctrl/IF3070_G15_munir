@@ -182,7 +182,6 @@ def _run_simulated_annealing(problem: State, config: ExperimentConfig, seed: int
 
 
 def _write_run_json(directory: Path, result: ExperimentRun) -> None:
-    # asdict preserves the old state shape and adds the optional metrics above.
     payload = {"schema_version": 2, **asdict(result)}
     path = directory / f"run_{result.run:02d}.json"
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -240,7 +239,6 @@ def _write_inputs(directory: Path, problem: State, config: ExperimentConfig) -> 
     payload = asdict(config)
     payload["output_dir"] = str(config.output_dir)
     (directory / "config.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    # Store a snapshot in the existing loader's format so a run can be replayed.
     problem_payload = {
         "ship": {
             "dimensions": {"w": problem.ship.width, "l": problem.ship.length},
