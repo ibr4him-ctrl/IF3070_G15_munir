@@ -1,5 +1,3 @@
-"""Static plots from recorded algorithm results; usable without a desktop display."""
-
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -16,7 +14,6 @@ if TYPE_CHECKING:
 
 
 def plot_state(state: State, title: str) -> Figure:
-    """Draw the grid and a complete inventory; x is width and y is length."""
     height = max(5.5, 2.8 + len(state.vehicles) * 0.32)
     figure = Figure(figsize=(12, height), layout="constrained")
     FigureCanvasAgg(figure)
@@ -121,7 +118,6 @@ def plot_annealing(run: "ExperimentRun") -> Figure:
     temperature_axes, probability_axes = figure.subplots(2, 1, sharex=True)
     temperatures = run.temperature_history or []
     probabilities = run.acceptance_probability_history or []
-    # Index 0 has no proposal. Only plot temperatures actually used for a move.
     temperature_axes.plot(range(1, len(temperatures)), temperatures[1:], color="#2563eb")
     probability_axes.plot(
         range(1, len(probabilities)), probabilities[1:], color="#7c3aed", linewidth=0.9
