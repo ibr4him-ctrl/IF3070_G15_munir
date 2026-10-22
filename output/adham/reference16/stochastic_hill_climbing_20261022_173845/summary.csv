@@ -1,0 +1,4 @@
+run,seed,initial_objective,final_objective,iterations,duration_seconds,population_size,non_improving_iterations,stuck_events,stagnation_episodes,stagnation_limit,accepted_candidates,rejected_candidates,accepted_worse,rejected_worse
+1,42,824.0,835.0,186,0.05593769999995857,,,,,,,,,
+2,43,849.0,856.0,107,0.04584999999997308,,,,,,,,,
+3,44,822.0,833.0,110,0.04698240000016085,,,,,,,,,
