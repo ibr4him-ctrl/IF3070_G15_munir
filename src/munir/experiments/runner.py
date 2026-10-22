@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import json
 import time
 from dataclasses import asdict, dataclass, replace
@@ -12,6 +13,8 @@ from munir.algorithms.simulated_annealing import simulated_annealing
 from munir.core.initial_state import create_random_initial_state
 from munir.core.models import State
 from munir.experiments.config import ExperimentConfig
+from munir.experiments.hc_sa_metrics import validate_search_states, weight_upper_bound
+from munir.visualization.hc_sa import save_hc_sa_plots
 from munir.visualization.plots import save_run_plots
 
 
@@ -38,6 +41,17 @@ class ExperimentRun:
     stuck_events: int | None = None
     stop_reason: str | None = None
     configuration: dict[str, Any] | None = None
+    initial_objective: float | None = None
+    accepted_candidates: int | None = None
+    rejected_candidates: int | None = None
+    accepted_worse: int | None = None
+    rejected_worse: int | None = None
+    stagnation_episodes: int | None = None
+    stagnation_limit: int | None = None
+    evaluation_bias: float | None = None
+    benchmark: dict[str, Any] | None = None
+    validation: dict[str, Any] | None = None
+    metric_definitions: dict[str, str] | None = None
 
 
 @dataclass(slots=True)
@@ -92,6 +106,7 @@ def _run_hill_climbing(problem: State, config: ExperimentConfig, seed: int) -> E
         final_state=result.final_state,
         initial_state=result.initial_state,
         iterations=result.iterations,
+        last_state=result.final_state,
     )
 
 
@@ -134,6 +149,8 @@ def _run_simulated_annealing(problem: State, config: ExperimentConfig, seed: int
         min_temperature=float(parameters["min_temperature"]),
         max_iterations=config.max_iterations,
         seed=seed,
+        evaluation_bias=float(parameters["evaluation_bias"]),
+        stagnation_limit=int(parameters["stagnation_limit"]),
     )
     return ExperimentRun(
         run=0,
@@ -154,6 +171,13 @@ def _run_simulated_annealing(problem: State, config: ExperimentConfig, seed: int
         non_improving_iterations=result.non_improving_iterations,
         stuck_events=result.stuck_events,
         stop_reason=result.stop_reason,
+        accepted_candidates=result.accepted_candidates,
+        rejected_candidates=result.rejected_candidates,
+        accepted_worse=result.accepted_worse,
+        rejected_worse=result.rejected_worse,
+        stagnation_episodes=result.stagnation_episodes,
+        stagnation_limit=result.stagnation_limit,
+        evaluation_bias=result.evaluation_bias,
     )
 
 
@@ -249,6 +273,12 @@ def _write_summary(directory: Path, runs: list[ExperimentRun]) -> None:
         "population_size",
         "non_improving_iterations",
         "stuck_events",
+        "stagnation_episodes",
+        "stagnation_limit",
+        "accepted_candidates",
+        "rejected_candidates",
+        "accepted_worse",
+        "rejected_worse",
     ]
     with (directory / "summary.csv").open("w", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=fields)
@@ -284,6 +314,8 @@ def run_experiment(problem: State, config: ExperimentConfig) -> ExperimentResult
             "initial_temperature": 100.0,
             "cooling_rate": 0.99,
             "min_temperature": 0.01,
+            "evaluation_bias": 0.0,
+            "stagnation_limit": 100,
         },
         "genetic_algorithm": {
             "population_size": 50,
@@ -301,6 +333,22 @@ def run_experiment(problem: State, config: ExperimentConfig) -> ExperimentResult
     )
     output_directory = _create_output_directory(config.output_dir, algorithm)
     _write_inputs(output_directory, problem, config)
+    is_hc_sa = algorithm in {"hill_climbing", "stochastic_hill_climbing", "simulated_annealing"}
+    upper_bound = weight_upper_bound(problem) if is_hc_sa else None
+    benchmark = (
+        {
+            "problem_snapshot": "problem.json",
+            "problem_snapshot_sha256": hashlib.sha256(
+                (output_directory / "problem.json").read_bytes()
+            ).hexdigest(),
+            "vehicle_count": len(problem.vehicles),
+            "ship": asdict(problem.ship),
+            "knapsack_upper_bound": upper_bound,
+            "upper_bound_method": "0/1 weight knapsack ignoring geometry",
+        }
+        if is_hc_sa
+        else None
+    )
     runs = []
 
     for run_number in range(1, config.runs + 1):
@@ -313,9 +361,35 @@ def run_experiment(problem: State, config: ExperimentConfig) -> ExperimentResult
             "max_iterations": config.max_iterations,
             "parameters": dict(config.parameters),
         }
+        if is_hc_sa:
+            if result.initial_state is None or result.last_state is None:
+                raise ValueError("HC/SA results require initial, last, and best states")
+            result.initial_objective = result.initial_state.value
+            result.validation = validate_search_states(
+                problem, result.initial_state, result.final_state, result.last_state
+            )
+            if result.final_objective != max(result.objective_history):
+                raise ValueError("HC/SA best objective does not match the recorded trajectory")
+            result.benchmark = benchmark
+            if algorithm == "simulated_annealing":
+                result.metric_definitions = {
+                    "delta": "candidate objective minus current objective before acceptance",
+                    "stuck_events": "starts of streaks without a new best; legacy metric",
+                    "stagnation_episodes": (
+                        f"streaks reaching {result.stagnation_limit} iterations "
+                        "without a new best; counted once until a new best resets "
+                        "the streak; not proven local optima"
+                    ),
+                    "history_index_zero": "initial state; no candidate or acceptance decision",
+                    "temperature": "initial_temperature * cooling_rate ** (iteration - 1)",
+                    "evaluation_bias": "zero-only compatibility option; ShippingFee is unchanged",
+                }
         runs.append(result)
         _write_run_json(output_directory, result)
-        save_run_plots(result, algorithm, output_directory)
+        if is_hc_sa and config.parameters.get("plot_style") == "report":
+            save_hc_sa_plots(result, algorithm, output_directory, upper_bound)
+        else:
+            save_run_plots(result, algorithm, output_directory)
 
     _write_history_csv(output_directory, runs)
     _write_summary(output_directory, runs)
